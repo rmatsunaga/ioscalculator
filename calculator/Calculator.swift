@@ -12,46 +12,48 @@ class Calculator
 {
     var buttons = [CalcButton]()
     var operation: String? = nil
-    var numberOne: Int? = nil
-    var numberTwo: Int? = nil
-    var result: Int? = nil
+    var numberOne: Double? = nil
+    var numberTwo: Double? = nil
+    var result: Double? = nil
     var decimal: Bool = false
+    var decimalDivider: Double = 10
     
     init() {
-        buttons.append(CalcButton.init("AC"))
-        buttons.append(CalcButton.init("+/-"))
-        buttons.append(CalcButton.init("%"))
-        buttons.append(CalcButton.init("/"))
-        
-        buttons.append(CalcButton.init("7"))
-        buttons.append(CalcButton.init("8"))
-        buttons.append(CalcButton.init("9"))
-        buttons.append(CalcButton.init("*"))
-        
-        buttons.append(CalcButton.init("4"))
-        buttons.append(CalcButton.init("5"))
-        buttons.append(CalcButton.init("6"))
-        buttons.append(CalcButton.init("-"))
-        
-        buttons.append(CalcButton.init("1"))
-        buttons.append(CalcButton.init("2"))
-        buttons.append(CalcButton.init("3"))
-        buttons.append(CalcButton.init("+"))
-        
-        buttons.append(CalcButton.init("0"))
-        buttons.append(CalcButton.init("."))
-        buttons.append(CalcButton.init("="))
+        let buttonTitles = ["AC", "+/-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "0", ".", "="]
+        for index in 0...buttonTitles.count - 1 {
+            buttons.append(CalcButton.init(buttonTitles[index]))
+        }
     }
     func calculate() {
         print("calculated")
         if(operation == "/") {
             result = numberOne! / numberTwo!
+            numberOne = result!
+            numberTwo = nil
+            operation = nil
+            decimal = false
+            decimalDivider = 10
         } else if(operation == "*") {
             result = numberOne! * numberTwo!
+            numberOne = result!
+            numberTwo = nil
+            operation = nil
+            decimal = false
+            decimalDivider = 10
         } else if(operation == "-") {
             result = numberOne! - numberTwo!
+            numberOne = result!
+            numberTwo = nil
+            operation = nil
+            decimal = false
+            decimalDivider = 10
         } else {
             result = numberOne! + numberTwo!
+            numberOne = result!
+            numberTwo = nil
+            operation = nil
+            decimal = false
+            decimalDivider = 10
         }
     }
     func chooseButton(at index: String) {
@@ -63,17 +65,42 @@ class Calculator
                 // Is button clicked a number?
                 if(!button.isOperator) {
                     if(numberOne == nil) {
-                        numberOne = Int(button.identifier)!
+                        if(!decimal) {
+                            numberOne = Double(button.identifier)!
+                        } else {
+                            numberOne = Double(button.identifier)! / decimalDivider
+                            decimalDivider *= 10
+                            print(numberOne!)
+                        }
+                        
                         print("numberOne initialized")
                     } else if(numberOne != nil && operation == nil) {
-                        numberOne = numberOne! * 10 + Int(button.identifier)!
+                        if(!decimal) {
+                            numberOne = numberOne! * 10 + Double(button.identifier)!
+                        } else {
+                            numberOne = numberOne! + Double(button.identifier)! / decimalDivider
+                            decimalDivider *= 10
+                        }
+                        
                         print("numberOne modified")
                     } else if(numberOne != nil && operation != nil) {
                         if(numberTwo == nil) {
-                            numberTwo = Int(button.identifier)!
+                            if(!decimal) {
+                                numberTwo = Double(button.identifier)!
+                            } else {
+                                numberTwo = Double(button.identifier)! / decimalDivider
+                                decimalDivider *= 10
+                            }
+                            
                             print("numberTwo initialized")
                         } else {
-                            numberTwo = numberTwo! * 10 + Int(button.identifier)!
+                            if(!decimal) {
+                                numberTwo = numberTwo! * 10 + Double(button.identifier)!
+                            } else {
+                                numberTwo = numberTwo! * 10 + Double(button.identifier)! / decimalDivider
+                                decimalDivider *= 10
+                            }
+                            
                             print("NumberTwo modified")
                         }
                     }
@@ -111,7 +138,10 @@ class Calculator
                     case ".":
                         decimal = true
                     case "=":
-                        calculate()
+                        if(numberOne != nil && numberTwo != nil && operation != nil) {
+                            calculate()
+                        }
+                        
                     default:
                         operation = button.identifier
                     }

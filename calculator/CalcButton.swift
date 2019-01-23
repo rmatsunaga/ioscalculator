@@ -17,7 +17,7 @@ struct CalcButton
     init(_ identifier: String) {
         self.identifier = identifier
         switch identifier {
-        case "/", "*", "-", "+", "AC", "+/-", "%", "=":
+        case "/", "*", "-", "+", "AC", "+/-", "%", "=", ".":
             isOperator = true
         default:
             isOperator = false

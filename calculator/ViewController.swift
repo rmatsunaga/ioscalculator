@@ -177,8 +177,6 @@ class ViewController: UIViewController {
         
         sender.layer.borderWidth = 2
         
-        
-        
     }
 
 
