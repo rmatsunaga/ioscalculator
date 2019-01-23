@@ -10,14 +10,14 @@ import Foundation
 
 struct CalcButton
 {
-    var isSelected = false
+//    var isSelected = false
     let isOperator: Bool
     let identifier: String
     
     init(_ identifier: String) {
         self.identifier = identifier
         switch identifier {
-        case "/", "X", "-", "+", "AC", "+/-", "%", "=":
+        case "/", "*", "-", "+", "AC", "+/-", "%", "=":
             isOperator = true
         default:
             isOperator = false

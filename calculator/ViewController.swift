@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     var calculator = Calculator()
     
-    let calcResult = UILabel()
+    var calcResult = UILabel()
 
     var buttons: [UIButton] = [UIButton]()
     
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         
         // Preparing Grid
         let rowOne = ["AC", "+/-", "%", "/"]
-        let rowTwo = ["7", "8", "9", "x"]
+        let rowTwo = ["7", "8", "9", "*"]
         let rowThree = ["4", "5", "6", "-"]
         let rowFour = ["1", "2", "3", "+"]
         let rowFive = ["0", ".", "="]
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
                 button.backgroundColor = UIColor.gray
                 button.setTitleColor(.white
                     , for: .normal)
-            case "/", "x", "-", "+", "=":
+            case "/", "*", "-", "+", "=":
                 button.backgroundColor = UIColor.orange
                 button.setTitleColor(.white, for: .normal)
             default:
@@ -141,37 +141,42 @@ class ViewController: UIViewController {
     
     }
     
+    
+    
+    
+    
     @objc func buttonClick(sender: UIButton) {
         // If button is clicked, change UI and that button's model component
-
-        
-        switch sender.titleLabel!.text! {
-        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9": calcResult.text = String(Int(calcResult.text!)! * 10 + Int(sender.titleLabel!.text!)!)
-        case "AC":
-            calcResult.text = "0"
-        case "+/-":
-            calcResult.text = String(Int(calcResult.text!)! * -1)
-        case "%":
-            calcResult.text = String(Int(calcResult.text!)! / 100)
-        case "/", "X", "-", "+":
-            sender.layer.borderColor = UIColor.yellow.cgColor
-            sender.layer.borderWidth = 2
-        case "=":
-            calcResult.text = String(calculator.result)
-        default:
-            break
-        }
-        
         calculator.chooseButton(at: sender.titleLabel!.text!)
-        updateViewFromModel()
+        updateViewFromModel(sender)
+        
+
     }
     
-    func updateViewFromModel() {
-        // Make sure only two operators
-        for index in calculator.buttons.indices {
-            let current = buttons[index]
-            
+    func updateViewFromModel(_ sender: UIButton) {
+        // Display should be either numberOne
+            // numberTwo
+            // Result
+            // or 0
+        if(calculator.numberOne == nil) {
+            calcResult.text = "0"
+        } else if(calculator.numberTwo == nil) {
+            calcResult.text = String(calculator.numberOne!)
+        } else if(calculator.result == nil) {
+            calcResult.text = String(calculator.numberTwo!)
+        } else {
+            calcResult.text = String(calculator.result!)
         }
+        //Last button clicked should be yellow
+
+        for button in buttons {
+            button.layer.borderColor = .none
+            button.layer.borderWidth = 0
+        }
+        sender.layer.borderColor = UIColor.yellow.cgColor
+        
+        sender.layer.borderWidth = 2
+        
         
         
     }
