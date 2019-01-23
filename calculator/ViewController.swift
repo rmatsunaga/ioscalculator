@@ -9,6 +9,11 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var calculator = Calculator()
+    
+    let calcResult = UILabel()
+
+    var buttons: [UIButton] = [UIButton]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +21,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .black
         
         // Create top label for work
-        let calcResult = UILabel()
         calcResult.text = "0"
         calcResult.textColor = .white
         calcResult.textAlignment = NSTextAlignment.right
@@ -35,7 +39,7 @@ class ViewController: UIViewController {
         
         // Preparing Grid
         let rowOne = ["AC", "+/-", "%", "/"]
-        let rowTwo = ["7", "8", "9", "*"]
+        let rowTwo = ["7", "8", "9", "x"]
         let rowThree = ["4", "5", "6", "-"]
         let rowFour = ["1", "2", "3", "+"]
         let rowFive = ["0", ".", "="]
@@ -115,7 +119,7 @@ class ViewController: UIViewController {
                 button.backgroundColor = UIColor.gray
                 button.setTitleColor(.white
                     , for: .normal)
-            case "/", "*", "-", "+", "=":
+            case "/", "x", "-", "+", "=":
                 button.backgroundColor = UIColor.orange
                 button.setTitleColor(.white, for: .normal)
             default:
@@ -124,14 +128,54 @@ class ViewController: UIViewController {
             }
             
             if(name == "0") {
-                button.widthAnchor.constraint(equalToConstant: )
+                button.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2)
             }
-            button.layer.cornerRadius = button.frame.size.width / 2
+            button.layer.cornerRadius = view.frame.size.width / 8
             button.clipsToBounds = true
+            
+            button.addTarget(self, action: #selector(buttonClick(sender:)), for: .touchUpInside)
+            
+            buttons.append(button)
             return button
         }
     
     }
+    
+    @objc func buttonClick(sender: UIButton) {
+        // If button is clicked, change UI and that button's model component
+
+        
+        switch sender.titleLabel!.text! {
+        case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9": calcResult.text = String(Int(calcResult.text!)! * 10 + Int(sender.titleLabel!.text!)!)
+        case "AC":
+            calcResult.text = "0"
+        case "+/-":
+            calcResult.text = String(Int(calcResult.text!)! * -1)
+        case "%":
+            calcResult.text = String(Int(calcResult.text!)! / 100)
+        case "/", "X", "-", "+":
+            sender.layer.borderColor = UIColor.yellow.cgColor
+            sender.layer.borderWidth = 2
+        case "=":
+            calcResult.text = String(calculator.result)
+        default:
+            break
+        }
+        
+        calculator.chooseButton(at: sender.titleLabel!.text!)
+        updateViewFromModel()
+    }
+    
+    func updateViewFromModel() {
+        // Make sure only two operators
+        for index in calculator.buttons.indices {
+            let current = buttons[index]
+            
+        }
+        
+        
+    }
+
 
 
 }
