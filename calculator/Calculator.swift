@@ -24,8 +24,8 @@ class Calculator
             buttons.append(CalcButton.init(buttonTitles[index]))
         }
     }
+    
     func calculate() {
-        print("calculated")
         if(operation == "/") {
             result = numberOne! / numberTwo!
             numberOne = result!
@@ -56,6 +56,7 @@ class Calculator
             decimalDivider = 10
         }
     }
+    
     func chooseButton(at index: String) {
         // find button
         for button in buttons {
@@ -70,10 +71,8 @@ class Calculator
                         } else {
                             numberOne = Double(button.identifier)! / decimalDivider
                             decimalDivider *= 10
-                            print(numberOne!)
                         }
                         
-                        print("numberOne initialized")
                     } else if(numberOne != nil && operation == nil) {
                         if(!decimal) {
                             numberOne = numberOne! * 10 + Double(button.identifier)!
@@ -82,7 +81,6 @@ class Calculator
                             decimalDivider *= 10
                         }
                         
-                        print("numberOne modified")
                     } else if(numberOne != nil && operation != nil) {
                         if(numberTwo == nil) {
                             if(!decimal) {
@@ -92,7 +90,6 @@ class Calculator
                                 decimalDivider *= 10
                             }
                             
-                            print("numberTwo initialized")
                         } else {
                             if(!decimal) {
                                 numberTwo = numberTwo! * 10 + Double(button.identifier)!
@@ -101,39 +98,33 @@ class Calculator
                                 decimalDivider *= 10
                             }
                             
-                            print("NumberTwo modified")
                         }
                     }
                 } else {
                 // button is either an operator or modifier or =
+                    decimalDivider = 10
+                    decimal = false
                     switch button.identifier {
                     case "AC":
                         numberOne = nil
                         numberTwo = nil
                         operation = nil
                         result = nil
-                        print("allShit Cleared")
                     case "+/-":
                         if(numberOne != nil) {
                             numberOne! *= -1
-                            print("numberOne been modified")
                         } else if(numberTwo == nil) {
                             numberOne! *= -1
-                            print("numberOne been modified")
                         } else {
                             numberTwo! *= -1
-                            print("numberTwo been modified")
                         }
                     case "%":
                         if(numberOne != nil) {
                             numberOne! /= 100
-                            print("numberOne been modified")
                         } else if(numberTwo == nil) {
                             numberOne! /= 100
-                            print("numberOne been modified")
                         } else {
                             numberTwo! /= 100
-                            print("numberTwo been modified")
                         }
                     case ".":
                         decimal = true

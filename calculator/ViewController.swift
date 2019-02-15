@@ -129,6 +129,7 @@ class ViewController: UIViewController {
             
             if(name == "0") {
                 button.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2)
+                
             }
             button.layer.cornerRadius = view.frame.size.width / 8
             button.clipsToBounds = true
@@ -142,15 +143,10 @@ class ViewController: UIViewController {
     }
     
     
-    
-    
-    
     @objc func buttonClick(sender: UIButton) {
         // If button is clicked, change UI and that button's model component
         calculator.chooseButton(at: sender.titleLabel!.text!)
         updateViewFromModel(sender)
-        
-
     }
     
     func updateViewFromModel(_ sender: UIButton) {
